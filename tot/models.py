@@ -61,12 +61,13 @@ def get_qwen_llm(repo_id, model):
         qwen_llm = Llama.from_pretrained(
             repo_id=repo_id,
             filename=model,
-            n_gpu_layers=-1,  # Use GPU acceleration
+            n_gpu_layers=0,  # Use GPU acceleration was prev -1
+            n_ctx=2048, #added since the context window wanst big enough for sudoku
             chat_format="chatml"
         )
     return qwen_llm
 
-def qwen(prompt, repo_id="unsloth/Qwen3.6-27B-GGUF", model="*Qwen3.6-27B-Q4_K_M.gguf", temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
+def qwen(prompt, repo_id="Qwen/Qwen2.5-7B-Instruct-GGUF", model="qwen2.5-7b-instruct-q2_k.gguf", temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
     llm = get_qwen_llm(repo_id, model)
 
     outputs = []
