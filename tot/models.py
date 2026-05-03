@@ -62,7 +62,7 @@ def get_qwen_llm(repo_id, model):
             repo_id=repo_id,
             filename=model,
             n_gpu_layers=20,  # Use GPU acceleration was prev -1
-            n_ctx=2048, #added since the context window wanst big enough for sudoku
+            n_ctx=8192, #added since the context window wanst big enough for sudoku or text
             chat_format="chatml"
         )
     return qwen_llm
