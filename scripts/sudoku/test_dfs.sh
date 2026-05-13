@@ -1,0 +1,11 @@
+python run.py \
+    --task sudoku4x4 \
+    --task_start_index 21 \
+    --task_end_index 22 \
+    --search_method dfs \
+    --method_generate propose \
+    --method_evaluate value \
+    --method_select greedy \
+    --n_evaluate_sample 1 \
+    --n_select_sample 3 \
+    --fallback_evaluate local

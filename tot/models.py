@@ -67,7 +67,7 @@ def get_qwen_llm(repo_id, model):
         )
     return qwen_llm
 
-def qwen(prompt, repo_id="unsloth/Qwen3.6-27B-GGUF", model="*Qwen3.6-27B-Q4_K_M.gguf", temperature=0.7, max_tokens=150, n=1, stop=None) -> list:
+def qwen(prompt, repo_id="unsloth/Qwen3.6-27B-GGUF", model="*Qwen3.6-27B-Q4_K_M.gguf", temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
     llm = get_qwen_llm(repo_id, model)
 
     outputs = []

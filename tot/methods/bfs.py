@@ -46,6 +46,9 @@ def get_samples(task, x, y, n_generate_sample, prompt_sample, stop):
     samples = qwen(prompt, n=n_generate_sample, stop=stop)
     return [y + _ for _ in samples]
 
+def is_finished(task, x, y):
+    return hasattr(task, 'is_finished') and task.is_finished(x, y)
+
 def solve(args, task, idx, to_print=True):
     global qwen
     qwen = partial(qwen, temperature=args.temperature)
@@ -54,11 +57,19 @@ def solve(args, task, idx, to_print=True):
     ys = ['']  # current output candidates
     infos = []
     for step in range(task.steps):
+        if all(is_finished(task, x, y) for y in ys):
+            break
         # generation
-        if args.method_generate == 'sample':
-            new_ys = [get_samples(task, x, y, args.n_generate_sample, prompt_sample=args.prompt_sample, stop=task.stops[step]) for y in ys]
-        elif args.method_generate == 'propose':
-            new_ys = [get_proposals(task, x, y) for y in ys]
+        new_ys = []
+        for y in ys:
+            if is_finished(task, x, y):
+                new_ys.append([y])
+            elif args.method_generate == 'sample':
+                new_ys.append(get_samples(task, x, y, args.n_generate_sample, prompt_sample=args.prompt_sample, stop=task.stops[step]))
+            elif args.method_generate == 'propose':
+                new_ys.append(get_proposals(task, x, y))
+            else:
+                raise ValueError(f'method_generate {args.method_generate} not recognized')
         new_ys = list(itertools.chain(*new_ys))
         ids = list(range(len(new_ys)))
         # evaluation

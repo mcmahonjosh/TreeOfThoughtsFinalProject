@@ -11,5 +11,8 @@ def get_task(name):
     elif name == 'sudoku':
         from tot.tasks.sudoku import SudokuTask
         return SudokuTask()
+    elif name == 'sudoku4x4':
+        from tot.tasks.sudoku4x4 import Sudoku4x4Task
+        return Sudoku4x4Task()
     else:
         raise NotImplementedError
